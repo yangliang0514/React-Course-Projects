@@ -4,5 +4,9 @@ export default function Footer() {
   const closeHour = 22;
   const isOpen = currentHour >= openHour && currentHour < closeHour;
 
-  return <footer>{isOpen ? "We're currently open!" : "We're closed!"}</footer>;
+  return (
+    <footer className="footer">
+      {isOpen ? "We're currently open!" : "We're closed!"}
+    </footer>
+  );
 }
