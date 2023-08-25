@@ -1,12 +1,12 @@
 export default function Pizza({ pizza }) {
   return (
-    <div className="pizza">
-      <h3>{pizza.name}</h3>
+    <li className={`pizza ${pizza.soldOut ? "sold-out" : ""}`}>
       <img src={pizza.photoName} alt="pizza" />
       <div>
+        <h3>{pizza.name}</h3>
         <p>{pizza.ingredients}</p>
         <span>$ {pizza.price}</span>
       </div>
-    </div>
+    </li>
   );
 }

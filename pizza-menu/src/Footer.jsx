@@ -6,7 +6,21 @@ export default function Footer() {
 
   return (
     <footer className="footer">
-      {isOpen ? "We're currently open!" : "We're closed!"}
+      <div className="order">
+        {isOpen ? (
+          <>
+            <p>
+              We're open until {closeHour}:00. Come visit us or order online.
+            </p>
+            <button className="btn">Order</button>
+          </>
+        ) : (
+          <p>
+            Sorry we're closed. The store will be open between {openHour}:00 and{" "}
+            {closeHour}:00
+          </p>
+        )}
+      </div>
     </footer>
   );
 }

@@ -5,9 +5,13 @@ export default function Menu() {
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      {pizzaData.map((pizza) => (
-        <Pizza pizza={pizza} key={pizza.id} />
-      ))}
+      {pizzaData.length !== 0 && (
+        <ul className="pizzas">
+          {pizzaData.map((pizza) => (
+            <Pizza pizza={pizza} key={pizza.id} />
+          ))}
+        </ul>
+      )}
     </main>
   );
 }
