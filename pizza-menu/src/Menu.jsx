@@ -1,5 +1,5 @@
 import Pizza from "./Pizza";
-import pizzaData from "../public/data";
+import pizzaData from "../public/data.js";
 
 export default function Menu() {
   return (
