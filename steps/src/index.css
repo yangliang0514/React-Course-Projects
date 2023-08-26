@@ -78,6 +78,16 @@ body {
   line-height: 1;
 }
 
+.btn-active {
+  background-color: #7950f2;
+  color: #fff;
+}
+
+.btn-disabled {
+  background-color: #b5b5b5;
+  color: #fff;
+}
+
 h3 {
   margin: 0;
   text-transform: uppercase;
@@ -90,7 +100,7 @@ h3 {
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 40px;
+  font-size: 20px;
   color: inherit;
 }
 
