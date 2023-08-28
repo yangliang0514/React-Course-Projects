@@ -7,26 +7,45 @@ export default function App() {
   const date = new Date();
   date.setDate(date.getDate() + count);
 
+  function handleReset() {
+    setStep(1);
+    setCount(0);
+  }
+
   return (
     <main className="container">
       <div className="control">
-        <button
-          onClick={() => setStep((prev) => prev && prev - 1)}
+        <input
+          type="range"
+          min="1"
+          max="10"
+          value={step}
+          onChange={(e) => setStep(+e.target.value)}
+        />
+        <label>Steps: {step}</label>
+
+        {/* <button
+          onClick={() => setStep((s) => s && s - 1)}
           className="btn"
         >
           &#8722;
         </button>
         <p>Steps: {step}</p>
-        <button onClick={() => setStep((prev) => prev + 1)} className="btn">
+        <button onClick={() => setStep((s) => s + 1)} className="btn">
           &#43;
-        </button>
+        </button> */}
       </div>
       <div className="control">
-        <button onClick={() => setCount((prev) => prev - step)} className="btn">
+        <button onClick={() => setCount((c) => c - step)} className="btn">
           &#8722;
         </button>
-        <p>Count: {count}</p>
-        <button onClick={() => setCount((prev) => prev + step)} className="btn">
+        {/* <p>Count: {count}</p> */}
+        <input
+          type="text"
+          value={`Count: ${count}`}
+          onChange={(e) => setCount(+e.target.value.split(" ")[1])}
+        />
+        <button onClick={() => setCount((c) => c + step)} className="btn">
           &#43;
         </button>
       </div>
@@ -37,6 +56,13 @@ export default function App() {
         {count > 0 && `${count} ${count > 1 ? "days" : "day"} from now is `}
         {date.toDateString()}
       </div>
+
+      {/* only render the reset button when the count and step is not in the default state */}
+      {(count !== 0 || step !== 1) && (
+        <button className="btn-reset" onClick={handleReset}>
+          Reset
+        </button>
+      )}
     </main>
   );
 }
