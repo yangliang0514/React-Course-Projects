@@ -1,29 +1,30 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-export default function Form() {
-  const [itemDescript, setItemDescript] = useState("");
-  const [itemCount, setItemCount] = useState(1);
+export default function Form({ onAddItems }) {
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (itemCount === "") return;
+    if (!description) return;
 
     const newItem = {
-      description: itemDescript,
-      quantity: itemCount,
+      description,
+      quantity,
       id: uuidv4(),
       packed: false,
     };
 
-    setItemDescript("");
-    setItemCount(1);
+    onAddItems(newItem);
+    setDescription("");
+    setQuantity(1);
   }
 
   return (
     <form className="add-form" onSubmit={handleSubmit}>
       <h3>What do you need for your trip?</h3>
-      <select value={itemCount} onChange={(e) => setItemCount(+e.target.value)}>
+      <select value={quantity} onChange={(e) => setQuantity(+e.target.value)}>
         {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
           <option value={num} key={num}>
             {num}
@@ -33,8 +34,8 @@ export default function Form() {
       <input
         type="text"
         placeholder="Item..."
-        value={itemDescript}
-        onChange={(e) => setItemDescript(e.target.value)}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
       <button>Add</button>
     </form>
