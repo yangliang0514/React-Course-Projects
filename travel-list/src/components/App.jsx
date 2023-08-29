@@ -1,5 +1,4 @@
 import Form from "./Form";
-import Logo from "./Logo";
 import PackingList from "./PackingList";
 import Stats from "./Stats";
 import { useState } from "react";
@@ -24,14 +23,26 @@ export default function App() {
     setItems(newItems);
   }
 
+  function handleClearItems() {
+    // early return if there are no items in the list
+    if (!items.length) return;
+    // a browser api to show a comfirm windows
+    const confirmed = window.confirm(
+      "Are you sure you want to delete all items?"
+    );
+    // only clear items when the user confirms it
+    if (confirmed) setItems([]);
+  }
+
   return (
     <div className="app">
-      <Logo />
+      <h1>Far Away</h1>
       <Form onAddItem={handleAddItem} />
       <PackingList
         items={items}
         onDeleteItem={handleDeleteItem}
         onToggleItem={handleToggleItem}
+        onClearItems={handleClearItems}
       />
       <Stats items={items} />
     </div>
