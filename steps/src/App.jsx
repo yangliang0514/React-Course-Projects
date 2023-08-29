@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Button from "./Button";
+import StepMessage from "./StepMessage";
 
 const messages = [
   "Learn React ⚛️",
@@ -33,23 +35,19 @@ export default function App() {
             <div className={step >= 3 ? "active" : ""}>3</div>
           </div>
 
-          <p className="message">
-            Step {step}: {messages[step - 1]}
-          </p>
+          <StepMessage step={step}>
+            <p>{messages[step - 1]}</p>
+          </StepMessage>
 
           <div className="buttons">
-            <button
-              className={step > 1 ? "btn-active" : "btn-disabled"}
-              onClick={handlePrevious}
-            >
-              previous
-            </button>
-            <button
-              className={step < 3 ? "btn-active" : "btn-disabled"}
-              onClick={handleNext}
-            >
-              next
-            </button>
+            {/* elements can also be passed in as children prop */}
+            {/* just by putting them inside the component */}
+            <Button onClick={handlePrevious} active={step > 1}>
+              <span>👈🏻</span> Previous
+            </Button>
+            <Button onClick={handleNext} active={step < 3}>
+              Next <span>👉🏻</span>
+            </Button>
           </div>
         </div>
       )}
