@@ -6,14 +6,21 @@ import { useState } from "react";
 
 export default function App() {
   const [items, setItems] = useState([]);
-  // not a good practice to pass setState directly as a prop (?)
-  const handleAddItems = (newItem) => setItems((items) => [...items, newItem]);
+
+  function handleAddItem(newItem) {
+    setItems((items) => [...items, newItem]);
+  }
+
+  function handleDeleteItem(id) {
+    const newItems = items.filter((item) => item.id !== id);
+    setItems(newItems);
+  }
 
   return (
     <div className="app">
       <Logo />
-      <Form onAddItems={handleAddItems} />
-      <PackingList items={items} />
+      <Form onAddItem={handleAddItem} />
+      <PackingList items={items} onDeleteItems={handleDeleteItem} />
       <Stats />
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-export default function Form({ onAddItems }) {
+export default function Form({ onAddItem }) {
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -16,7 +16,7 @@ export default function Form({ onAddItems }) {
       packed: false,
     };
 
-    onAddItems(newItem);
+    onAddItem(newItem);
     setDescription("");
     setQuantity(1);
   }
