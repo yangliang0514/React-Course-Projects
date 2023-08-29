@@ -1,6 +1,11 @@
-export default function Item({ item, onDeleteItem }) {
+export default function Item({ item, onDeleteItem, onToggleItem }) {
   return (
-    <li key={item.id}>
+    <li>
+      <input
+        type="checkbox"
+        value={item.packed}
+        onChange={() => onToggleItem(item.id)}
+      />
       <span className={item.packed ? "packed" : ""}>
         {item.quantity} {item.description}
       </span>
