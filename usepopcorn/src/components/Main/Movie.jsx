@@ -1,3 +1,5 @@
+import Movieinfo from "./MovieInfo";
+
 export default function Movie({ movie, watched }) {
   const item = movie || watched;
 
@@ -13,22 +15,7 @@ export default function Movie({ movie, watched }) {
           </p>
         </div>
       )}
-      {watched && (
-        <div>
-          <p>
-            <span>⭐️</span>
-            <span>{item.imdbRating}</span>
-          </p>
-          <p>
-            <span>🌟</span>
-            <span>{item.userRating}</span>
-          </p>
-          <p>
-            <span>⏳</span>
-            <span>{item.runtime} min</span>
-          </p>
-        </div>
-      )}
+      {watched && <Movieinfo movie={item} />}
     </li>
   );
 }

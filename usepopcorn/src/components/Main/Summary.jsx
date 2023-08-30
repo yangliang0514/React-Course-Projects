@@ -1,3 +1,5 @@
+import MovieInfo from "./MovieInfo";
+
 export default function Summary({ watched }) {
   const avgImdbRating = watched.reduce(
     (acc, curr, _, arr) => acc + curr.imdbRating / arr.length,
@@ -15,24 +17,18 @@ export default function Summary({ watched }) {
   return (
     <div className="summary">
       <h2>Movies you watched</h2>
-      <div>
+      <MovieInfo
+        movie={{
+          imdbRating: avgImdbRating,
+          userRating: avgUserRating,
+          runtime: avgRuntime,
+        }}
+      >
         <p>
           <span>#️⃣</span>
           <span>{watched.length} movies</span>
         </p>
-        <p>
-          <span>⭐️</span>
-          <span>{avgImdbRating}</span>
-        </p>
-        <p>
-          <span>🌟</span>
-          <span>{avgUserRating}</span>
-        </p>
-        <p>
-          <span>⏳</span>
-          <span>{avgRuntime} min</span>
-        </p>
-      </div>
+      </MovieInfo>
     </div>
   );
 }
