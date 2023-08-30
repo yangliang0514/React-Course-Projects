@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Movie from "./Movie";
+import MovieList from "./MovieList";
 
-export default function Box({ movies, children }) {
+export default function Box({ movies, watched, children }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -12,11 +12,7 @@ export default function Box({ movies, children }) {
       {isOpen && (
         <>
           {children}
-          <ul className="list">
-            {movies?.map((movie) => (
-              <Movie movie={movie} key={movie.imdbID} />
-            ))}
-          </ul>
+          <MovieList movies={movies} watched={watched} />
         </>
       )}
     </div>
