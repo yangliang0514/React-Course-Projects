@@ -1,13 +1,10 @@
 import Logo from "./Logo";
-import ResultNum from "./ResultNum";
-import Search from "./Search";
 
-export default function NavBar({ movies, query, setQuery }) {
+export default function NavBar({ children }) {
   return (
     <nav className="nav-bar">
       <Logo />
-      <Search query={query} setQuery={setQuery} />
-      <ResultNum movies={movies} />
+      {children}
     </nav>
   );
 }
