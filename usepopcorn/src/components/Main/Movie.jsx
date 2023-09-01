@@ -1,10 +1,10 @@
 import Movieinfo from "./MovieInfo";
 
-export default function Movie({ movie, watched }) {
+export default function Movie({ movie, watched, onClick }) {
   const item = movie || watched;
 
   return (
-    <li>
+    <li onClick={() => onClick(movie.imdbID)}>
       <img src={item.Poster} alt={`${item.Title} poster`} />
       <h3>{item.Title}</h3>
       {movie && (
