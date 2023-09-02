@@ -1,18 +1,27 @@
 import MovieInfo from "./MovieInfo";
 
 export default function Summary({ watched }) {
-  const avgImdbRating = watched.reduce(
-    (acc, curr, _, arr) => acc + curr.imdbRating / arr.length,
-    0
-  );
-  const avgUserRating = watched.reduce(
-    (acc, curr, _, arr) => acc + curr.userRating / arr.length,
-    0
-  );
-  const avgRuntime = watched.reduce(
-    (acc, curr, _, arr) => acc + curr.runtime / arr.length,
-    0
-  );
+  const avgImdbRating =
+    Math.round(
+      watched.reduce(
+        (acc, curr, _, arr) => acc + curr.imdbRating / arr.length,
+        0
+      ) * 10
+    ) / 10;
+  const avgUserRating =
+    Math.round(
+      watched.reduce(
+        (acc, curr, _, arr) => acc + curr.userRating / arr.length,
+        0
+      ) * 10
+    ) / 10;
+  const avgRuntime =
+    Math.round(
+      watched.reduce(
+        (acc, curr, _, arr) => acc + curr.Runtime / arr.length,
+        0
+      ) * 10
+    ) / 10;
 
   return (
     <div className="summary">
@@ -21,7 +30,7 @@ export default function Summary({ watched }) {
         movie={{
           imdbRating: avgImdbRating,
           userRating: avgUserRating,
-          runtime: avgRuntime,
+          Runtime: avgRuntime,
         }}
       >
         <p>

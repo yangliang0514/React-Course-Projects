@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { tempMovieData, tempWatchedData } from "../public/data";
 import NavBar from "./components/Navbar/NavBar";
 import Box from "./components/Main/Box";
 import Summary from "./components/Main/Summary";
@@ -14,7 +13,7 @@ import MovieDetails from "./components/Main/MovieDetails";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
@@ -82,6 +81,8 @@ export default function App() {
             <MovieDetails
               selectedId={selectedId}
               onCloseMovie={handleCloseMovie}
+              onSetWatched={setWatched}
+              watchedMovies={watched}
             />
           ) : (
             <>
