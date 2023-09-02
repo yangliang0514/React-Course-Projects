@@ -20,14 +20,14 @@ export default function MovieDetails({
     (movie) => movie.imdbID === selectedId
   )?.userRating;
 
-  function handleAdd() {
+  function handleAddWatched() {
     const newWatchedMovie = {
       imdbID: movie.imdbID,
       Title: movie.Title,
       Year: movie.Year,
       Poster: movie.Poster,
       imdbRating: +movie.imdbRating,
-      Runtime: movie.Runtime.split(" ")[0],
+      Runtime: +movie.Runtime.split(" ")[0],
       userRating,
     };
 
@@ -65,6 +65,14 @@ export default function MovieDetails({
     })();
   }, [selectedId]);
 
+  useEffect(() => {
+    document.title = `Movie | ${movie.Title}`;
+
+    return () => {
+      document.title = "usePopcorn";
+    };
+  }, [movie]);
+
   return (
     <div className="details">
       {isLoading ? (
@@ -100,7 +108,7 @@ export default function MovieDetails({
                   />
                   {userRating > 0 && (
                     <button className="btn-add" onClick={handleUpdateRating}>
-                      Update User Rating
+                      Update Your Rating
                     </button>
                   )}
                 </>
@@ -113,7 +121,7 @@ export default function MovieDetails({
                     onSetRating={setUserRating}
                   />
                   {userRating > 0 && (
-                    <button className="btn-add" onClick={handleAdd}>
+                    <button className="btn-add" onClick={handleAddWatched}>
                       + Add to Watched List
                     </button>
                   )}
