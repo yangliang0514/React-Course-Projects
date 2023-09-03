@@ -4,7 +4,7 @@ export default function Search({ setQuery }) {
   const [searchStr, setSearchStr] = useState("");
 
   function handleSearch(e) {
-    if (e.key === "Enter") {
+    if (e.code === "Enter") {
       setQuery(searchStr);
     }
   }

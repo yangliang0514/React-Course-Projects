@@ -33,6 +33,7 @@ export default function App() {
   }
 
   useEffect(() => {
+    handleCloseMovie();
     const controller = new AbortController();
     (async () => {
       try {
@@ -85,7 +86,11 @@ export default function App() {
           {error ? (
             <ErrorMessage message={error} />
           ) : (
-            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+            <>
+              {!isLoading && (
+                <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+              )}
+            </>
           )}
         </Box>
         <Box>

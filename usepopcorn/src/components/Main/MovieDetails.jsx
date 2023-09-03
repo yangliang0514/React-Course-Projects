@@ -65,6 +65,26 @@ export default function MovieDetails({
     })();
   }, [selectedId]);
 
+  // attaching an event listener directly to the dom is a side effect
+  // which should be put in the useEffect hook
+  // and it is allowed in React to manipulate the dom directly in the useEffect hook
+  useEffect(() => {
+    // to remove an eventListener, the passed in function has to be the exact same one,
+    // so we have to define it separately
+    const closeMovie = (e) => {
+      if (e.code === "Escape") onCloseMovie();
+    };
+
+    document.addEventListener("keydown", closeMovie);
+
+    // remove the eventListener when the component unmounts
+    // or else it'll attach a new eventListener each time a component mounts (creating duplicates)
+    return () => {
+      document.removeEventListener("keydown", closeMovie);
+    };
+    // don't really get why putting this function in the dependency array (?)
+  }, [onCloseMovie]);
+
   useEffect(() => {
     document.title = `Movie | ${movie.Title}`;
 
@@ -98,7 +118,7 @@ export default function MovieDetails({
           </header>
           <section>
             <div className="rating">
-              {isWatched && (
+              {isWatched ? (
                 <>
                   <StarRating
                     maxRating={10}
@@ -112,8 +132,7 @@ export default function MovieDetails({
                     </button>
                   )}
                 </>
-              )}
-              {!isWatched && (
+              ) : (
                 <>
                   <StarRating
                     maxRating={10}
