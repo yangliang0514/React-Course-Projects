@@ -33,6 +33,7 @@ export default function App() {
   }
 
   useEffect(() => {
+    const controller = new AbortController();
     (async () => {
       try {
         // don't fetch any data if there is no query
@@ -47,7 +48,8 @@ export default function App() {
         const res = await fetch(
           `http://www.omdbapi.com/?apikey=${
             import.meta.env.VITE_API_KEY
-          }&s=${query}`
+          }&s=${query}`,
+          { signal: controller.signal }
         );
 
         if (!res.ok) {
@@ -60,17 +62,21 @@ export default function App() {
         }
         setMovies(data.Search);
       } catch (err) {
-        setError(err.message);
+        if (err.name !== "AbortError") setError(err.message);
       } finally {
         setIsLoading(false);
       }
     })();
+
+    return () => {
+      controller.abort();
+    };
   }, [query]);
 
   return (
     <>
       <NavBar>
-        <Search query={query} setQuery={setQuery} />
+        <Search setQuery={setQuery} />
         <ResultNum movies={movies} />
       </NavBar>
       <Main>
