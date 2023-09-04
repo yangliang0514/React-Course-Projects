@@ -13,10 +13,16 @@ import MovieDetails from "./components/Main/MovieDetails";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
+
+  // set the watch list's initial value to what's stored in the local storage
+  // by putting a callback function in the useState hook
+  // the function will be called and set the state to whatever is returned
+  const [watched, setWatched] = useState(
+    () => JSON.parse(localStorage.getItem("watched")) || []
+  );
 
   function handleSelectMovie(id) {
     setSelectedId((prevId) => (prevId === id ? null : id));
@@ -31,6 +37,11 @@ export default function App() {
       watchedMovies.filter((movie) => movie.imdbID !== id)
     );
   }
+
+  // store the watched list into local storage
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
 
   useEffect(() => {
     handleCloseMovie();
