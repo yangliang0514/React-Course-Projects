@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useKey } from "../../hooks/useKey";
 
 export default function Search({ setQuery }) {
   const [searchStr, setSearchStr] = useState("");
@@ -11,25 +12,11 @@ export default function Search({ setQuery }) {
     }
   }
 
-  // focus on the search input element and clears it when pressing enter
-  useEffect(() => {
-    const autoFocus = (e) => {
-      // don't focus if it is already focused
-      if (document.activeElement === inputEl.current) return;
-
-      if (e.code === "Enter") {
-        // the inputEl.current is the DOM element that is connected
-        inputEl.current.focus();
-        setSearchStr("");
-      }
-    };
-    // add the autoFocus listener to the document element
-    document.addEventListener("keydown", autoFocus);
-
-    return () => {
-      document.removeEventListener("keydown", autoFocus);
-    };
-  }, [setQuery]);
+  useKey("Enter", () => {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    setSearchStr("");
+  });
 
   return (
     <input
