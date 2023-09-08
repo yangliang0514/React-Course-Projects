@@ -3,23 +3,32 @@ import { useReducer, useState } from "react";
 export default function DateCounter() {
   // const [count, setCount] = useState(0);
 
+  const initialState = { count: 0, step: 1 };
+
   // the useReducer hook takes in 2 arguments,
-  // the first is the reducer function and the second is the original state
+  // the first is the reducer function (must be a pure function) and the second is the original state
   // the reduce function also takes in 2 arguments, first is the previous state and second is the action
   // you can custom design what action you want to do with the current state,
   // and the return value will be the new state
-  const [count, dispatch] = useReducer((state, action) => {
+  // this is a good way to manage multiple states at the same time
+  const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case "inc":
-        return state + action.payload;
+        return { ...state, count: state.count + state.step };
       case "dec":
-        return state - action.payload;
+        return { ...state, count: state.count - state.step };
       case "setCount":
-        return action.payload;
+        return { ...state, count: action.payload };
+      case "setStep":
+        return { ...state, step: action.payload };
+      case "reset":
+        return initialState;
+      default:
+        throw new Error("Unkown action");
     }
-  }, 0);
+  }, initialState);
 
-  const [step, setStep] = useState(1);
+  const { count, step } = state;
 
   // This mutates the date object.
   const date = new Date("june 21 2027");
@@ -31,23 +40,6 @@ export default function DateCounter() {
     dispatch({ type: "setCount", payload: +e.target.value });
   }
 
-  function inc() {
-    dispatch({ type: "inc", payload: step });
-  }
-
-  function dec() {
-    dispatch({ type: "dec", payload: step });
-  }
-
-  function defineStep(e) {
-    setStep(+e.target.value);
-  }
-
-  function reset() {
-    setCount(0);
-    setStep(1);
-  }
-
   return (
     <div className="counter">
       <div>
@@ -56,21 +48,27 @@ export default function DateCounter() {
           min="0"
           max="10"
           value={step}
-          onChange={defineStep}
+          onChange={(e) =>
+            dispatch({ type: "setStep", payload: +e.target.value })
+          }
         />
         <span>{step}</span>
       </div>
 
       <div>
-        <button onClick={dec}>-</button>
+        <button onClick={() => dispatch({ type: "dec", payload: step })}>
+          -
+        </button>
         <input value={count} onChange={defineCount} />
-        <button onClick={inc}>+</button>
+        <button onClick={() => dispatch({ type: "inc", payload: step })}>
+          +
+        </button>
       </div>
 
       <p>{date.toDateString()}</p>
 
       <div>
-        <button onClick={reset}>Reset</button>
+        <button onClick={(e) => dispatch({ type: "reset" })}>Reset</button>
       </div>
     </div>
   );
