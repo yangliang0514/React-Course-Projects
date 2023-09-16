@@ -1,9 +1,9 @@
-export default function NextButton({ onNext, onShow }) {
+export default function NextButton({ onNext, onShow, isLast }) {
   return (
     <>
       {onShow !== null && (
         <button className="btn btn-ui" onClick={onNext}>
-          Next
+          {isLast ? "Finish" : "Next"}
         </button>
       )}
     </>

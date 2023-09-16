@@ -6,6 +6,8 @@ import StartScreen from "./components/StartScreen";
 import Question from "./components/Question";
 import NextButton from "./components/NextButton";
 import ProgressBar from "./components/ProgressBar";
+import FisishedScreen from "./components/FinishedScreen";
+import RestartButton from "./components/RestartButton";
 
 const initialState = {
   questions: [],
@@ -14,6 +16,7 @@ const initialState = {
   index: 0,
   selectedAnswer: null,
   points: 0,
+  highscore: 0,
 };
 
 function reducer(state, action) {
@@ -39,6 +42,21 @@ function reducer(state, action) {
         selectedAnswer,
         points,
       };
+    case "finish":
+      return {
+        ...state,
+        status: "finished",
+        highscore:
+          state.points > state.highscore ? state.points : state.highscore,
+      };
+    case "restart":
+      return {
+        ...state,
+        status: "ready",
+        index: 0,
+        selectedAnswer: null,
+        points: 0,
+      };
     default:
       throw new Error("Action is unknown");
   }
@@ -46,7 +64,7 @@ function reducer(state, action) {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { questions, status, index, selectedAnswer, points } = state;
+  const { questions, status, index, selectedAnswer, points, highscore } = state;
   const totalPoints = questions.reduce(
     (acc, question) => acc + question.points,
     0
@@ -92,9 +110,24 @@ export default function App() {
               selectedAnswer={selectedAnswer}
             />
             <NextButton
-              onNext={() => dispatch({ type: "next" })}
+              onNext={() =>
+                dispatch({
+                  type: index !== questions.length - 1 ? "next" : "finish",
+                })
+              }
               onShow={selectedAnswer}
+              isLast={index === questions.length - 1}
             />
+          </>
+        )}
+        {status === "finished" && (
+          <>
+            <FisishedScreen
+              points={points}
+              totalPoints={totalPoints}
+              highscore={highscore}
+            />
+            <RestartButton onRestart={() => dispatch({ type: "restart" })} />
           </>
         )}
       </main>
