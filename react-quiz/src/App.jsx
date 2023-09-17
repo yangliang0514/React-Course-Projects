@@ -8,6 +8,9 @@ import NextButton from "./components/NextButton";
 import ProgressBar from "./components/ProgressBar";
 import FisishedScreen from "./components/FinishedScreen";
 import RestartButton from "./components/RestartButton";
+import Timer from "./components/Timer";
+
+const secondsPerQuestion = 20;
 
 const initialState = {
   questions: [],
@@ -17,6 +20,7 @@ const initialState = {
   selectedAnswer: null,
   points: 0,
   highscore: 0,
+  seconds: null,
 };
 
 function reducer(state, action) {
@@ -26,7 +30,11 @@ function reducer(state, action) {
     case "dataFailed":
       return { ...state, status: "error" };
     case "start":
-      return { ...state, status: "active" };
+      return {
+        ...state,
+        status: "active",
+        seconds: state.questions.length * secondsPerQuestion,
+      };
     case "next":
       return { ...state, index: state.index + 1, selectedAnswer: null };
     case "select":
@@ -51,11 +59,10 @@ function reducer(state, action) {
       };
     case "restart":
       return {
-        ...state,
+        ...initialState,
+        questions: state.questions,
         status: "ready",
-        index: 0,
-        selectedAnswer: null,
-        points: 0,
+        highscore: state.highscore,
       };
     default:
       throw new Error("Action is unknown");
@@ -64,7 +71,15 @@ function reducer(state, action) {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { questions, status, index, selectedAnswer, points, highscore } = state;
+  const {
+    questions,
+    status,
+    index,
+    selectedAnswer,
+    points,
+    highscore,
+    seconds,
+  } = state;
   const totalPoints = questions.reduce(
     (acc, question) => acc + question.points,
     0
@@ -109,15 +124,21 @@ export default function App() {
               dispatch={dispatch}
               selectedAnswer={selectedAnswer}
             />
-            <NextButton
-              onNext={() =>
-                dispatch({
-                  type: index !== questions.length - 1 ? "next" : "finish",
-                })
-              }
-              onShow={selectedAnswer}
-              isLast={index === questions.length - 1}
-            />
+            <footer>
+              <NextButton
+                onNext={() =>
+                  dispatch({
+                    type: index !== questions.length - 1 ? "next" : "finish",
+                  })
+                }
+                onShow={selectedAnswer}
+                isLast={index === questions.length - 1}
+              />
+              <Timer
+                onFinish={() => dispatch({ type: "finish" })}
+                seconds={seconds}
+              />
+            </footer>
           </>
         )}
         {status === "finished" && (
