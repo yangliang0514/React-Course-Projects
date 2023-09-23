@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import styles from "./City.module.css";
 
 const formatDate = (date) =>
@@ -9,6 +10,10 @@ const formatDate = (date) =>
   }).format(new Date(date));
 
 function City() {
+  // useParams hook is provided by react router to get params from the url
+  // will return an object with the key is what is defined in the routes e.g. /:id => {id: 1235}
+  const { id } = useParams();
+
   // TEMP DATA
   const currentCity = {
     cityName: "Lisbon",
@@ -51,9 +56,7 @@ function City() {
         </a>
       </div>
 
-      <div>
-        <ButtonBack />
-      </div>
+      <div></div>
     </div>
   );
 }
