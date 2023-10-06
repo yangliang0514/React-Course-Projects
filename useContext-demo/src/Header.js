@@ -1,12 +1,11 @@
-import { useContext } from "react";
 import Results from "./Results";
 import SearchPosts from "./searchPosts";
-import { PostContext } from "./App";
+import { usePostContext } from "./context/PostProvider";
 
 export default function Header() {
   // call the useContext function and pass in the context object
   // it'll return the value we put in the context provider
-  const { onClearPosts } = useContext(PostContext);
+  const { onClearPosts } = usePostContext();
 
   return (
     <header>
