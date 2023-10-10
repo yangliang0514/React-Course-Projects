@@ -1,5 +1,9 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useCities } from "../contexts/CityContext";
+import Spinner from "./Spinner";
 import styles from "./City.module.css";
+import Button from "./Button";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -13,16 +17,15 @@ function City() {
   // useParams hook is provided by react router to get params from the url
   // will return an object with the key is what is defined in the routes e.g. /:id => {id: 1235}
   const { id } = useParams();
+  const { getCity, currentCity, isLoading } = useCities();
 
-  // TEMP DATA
-  const currentCity = {
-    cityName: "Lisbon",
-    emoji: "🇵🇹",
-    date: "2027-10-31T15:59:59.138Z",
-    notes: "My favorite city so far!",
-  };
+  useEffect(() => {
+    getCity(id);
+  }, [id]);
 
   const { cityName, emoji, date, notes } = currentCity;
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div className={styles.city}>
@@ -56,7 +59,9 @@ function City() {
         </a>
       </div>
 
-      <div></div>
+      <div>
+        <Button type="back" />
+      </div>
     </div>
   );
 }
