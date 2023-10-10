@@ -52,7 +52,7 @@ function Form() {
       <div className={styles.buttons}>
         <Button text="Add" />
         {/* navigate to -1 mean to navigate back to the url before */}
-        <Button type="back" />
+        <Button type="back" to="/app/cities" />
       </div>
     </form>
   );

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./Button.module.css";
 
-export default function Button({ text, onClick, type }) {
+export default function Button({ text, onClick, type, to }) {
   const navigate = useNavigate();
 
   switch (type) {
@@ -11,7 +11,7 @@ export default function Button({ text, onClick, type }) {
           className={`${styles.btn} ${styles.back}`}
           onClick={(e) => {
             e.preventDefault();
-            navigate(-1);
+            navigate(to || -1);
           }}
         >
           &larr; Back
@@ -20,7 +20,7 @@ export default function Button({ text, onClick, type }) {
     default:
       return (
         <button
-          className={`${styles.btn} ${styles.primary}`}
+          className={`${styles.btn} ${styles[type] || styles.primary}`}
           onClick={(e) => {
             e.preventDefault();
             onClick();
