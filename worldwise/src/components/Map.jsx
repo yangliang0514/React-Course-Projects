@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   MapContainer,
   Marker,
@@ -12,16 +12,15 @@ import { useCities } from "../contexts/CityContext";
 import { useEffect, useState } from "react";
 import { useGeolocation } from "../hooks/useGeoLocation";
 import Button from "./Button";
+import { useUrlPosition } from "../hooks/useUrlPosition";
 
 export default function Map() {
   // a react router hook to access and set new query strings
-  const [searchParams] = useSearchParams();
   const [position, setPosition] = useState([40, 0]);
   const [geoLocation, getLocation, isLoadingPos] = useGeolocation();
   const { cities } = useCities();
 
-  // getting data from the searchParams
-  const [lat, lng] = [searchParams.get("lat"), searchParams.get("lng")];
+  const [lat, lng] = useUrlPosition();
 
   // change the current map position if the query strings changes
   useEffect(() => {
