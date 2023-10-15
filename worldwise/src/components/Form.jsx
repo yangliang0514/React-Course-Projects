@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUrlPosition } from "../hooks/useUrlPosition";
 import styles from "./Form.module.css";
 import Button from "./Button";
 import Spinner from "./Spinner";
 import Message from "./Message";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useCities } from "../contexts/CityContext";
 
 const geoApiUrl = (lat, lng) =>
   `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`;
@@ -25,6 +29,9 @@ function Form() {
   const [isLoadingGeo, setIsLoadingGeo] = useState(false);
   const [emoji, setEmoji] = useState("");
   const [errMessage, setErrMessage] = useState("");
+
+  const { createCity, isLoading } = useCities();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!lat || !lng) return;
@@ -56,12 +63,33 @@ function Form() {
     };
   }, [lat, lng]);
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!cityName || !date) return;
+
+    const newCity = {
+      cityName,
+      country,
+      emoji,
+      date,
+      notes,
+      position: { lat, lng },
+    };
+
+    await createCity(newCity);
+    navigate("/app/cities");
+  }
+
   if (isLoadingGeo) return <Spinner />;
   if (!lat || !lng) return <Message message="Start by clicking on the map." />;
   if (errMessage) return <Message message={errMessage} />;
 
   return (
-    <form className={styles.form}>
+    <form
+      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
+      onSubmit={handleSubmit}
+    >
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
         <input
@@ -74,10 +102,12 @@ function Form() {
 
       <div className={styles.row}>
         <label htmlFor="date">When did you go to {cityName}?</label>
-        <input
+
+        <DatePicker
           id="date"
-          onChange={(e) => setDate(e.target.value)}
-          value={date}
+          selected={date}
+          onChange={(date) => setDate(date)}
+          dateFormat={"MM/dd/yyyy"}
         />
       </div>
 
@@ -91,8 +121,7 @@ function Form() {
       </div>
 
       <div className={styles.buttons}>
-        <Button text="Add" />
-        {/* navigate to -1 mean to navigate back to the url before */}
+        <Button type="submit" text="Add" />
         <Button type="back" to="/app/cities" />
       </div>
     </form>

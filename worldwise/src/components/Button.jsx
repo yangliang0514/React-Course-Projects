@@ -11,20 +11,25 @@ export default function Button({ text, onClick, type, to }) {
           className={`${styles.btn} ${styles.back}`}
           onClick={(e) => {
             e.preventDefault();
+            // navigate to -1 mean to navigate back to the url before
             navigate(to || -1);
           }}
         >
           &larr; Back
         </button>
       );
+    case "submit":
+      return (
+        <button className={`${styles.btn} ${styles[type] || styles.primary}`}>
+          {text}
+        </button>
+      );
+
     default:
       return (
         <button
           className={`${styles.btn} ${styles[type] || styles.primary}`}
-          onClick={(e) => {
-            e.preventDefault();
-            onClick();
-          }}
+          onClick={onClick}
         >
           {text}
         </button>
