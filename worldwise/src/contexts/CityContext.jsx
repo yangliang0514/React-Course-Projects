@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 const CityContext = createContext();
@@ -129,7 +131,7 @@ export default function CitiesProvider({ children }) {
   );
 }
 
-function useCities() {
+export function useCities() {
   const context = useContext(CityContext);
 
   if (context === undefined) {
@@ -138,6 +140,3 @@ function useCities() {
 
   return context;
 }
-
-// eslint-disable-next-line react-refresh/only-export-components
-export { useCities };

@@ -9,30 +9,33 @@ import CityList from "./components/CityList";
 import CountryList from "./components/CountryList";
 import City from "./components/City";
 import Form from "./components/Form";
+import AuthProvider from "./contexts/AuthContext";
 
 export default function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Homepage />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/app" element={<AppLayout />}>
-            {/* this is a index route, which is a default route under "/app"  */}
-            {/* the use of Navigate component basically redirects to another route */}
-            {/* the replace mean it replaces the route with the redirected one */}
-            {/* so when the users click back to the previous page, they won't be redirected again */}
-            <Route index element={<Navigate to="cities" replace />} />
-            <Route path="cities" element={<CityList />} />
-            <Route path="cities/:id" element={<City />} />
-            <Route path="countries" element={<CountryList />} />
-            <Route path="form" element={<Form />} />
-          </Route>
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<Homepage />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/app" element={<AppLayout />}>
+              {/* this is a index route, which is a default route under "/app"  */}
+              {/* the use of Navigate component basically redirects to another route */}
+              {/* the replace mean it replaces the route with the redirected one */}
+              {/* so when the users click back to the previous page, they won't be redirected again */}
+              <Route index element={<Navigate to="cities" replace />} />
+              <Route path="cities" element={<CityList />} />
+              <Route path="cities/:id" element={<City />} />
+              <Route path="countries" element={<CountryList />} />
+              <Route path="form" element={<Form />} />
+            </Route>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </>
   );
 }
