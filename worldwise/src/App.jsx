@@ -10,6 +10,7 @@ import CountryList from "./components/CountryList";
 import City from "./components/City";
 import Form from "./components/Form";
 import AuthProvider from "./contexts/AuthContext";
+import Protected from "./components/utils/Protected";
 
 export default function App() {
   return (
@@ -21,7 +22,14 @@ export default function App() {
             <Route path="/product" element={<Product />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/app" element={<AppLayout />}>
+            <Route
+              path="/app"
+              element={
+                <Protected>
+                  <AppLayout />
+                </Protected>
+              }
+            >
               {/* this is a index route, which is a default route under "/app"  */}
               {/* the use of Navigate component basically redirects to another route */}
               {/* the replace mean it replaces the route with the redirected one */}
