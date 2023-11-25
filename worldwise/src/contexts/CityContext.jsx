@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 
+import { useCallback } from "react";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 const CityContext = createContext();
@@ -63,21 +64,26 @@ export default function CitiesProvider({ children }) {
     })();
   }, []);
 
-  async function getCity(id) {
-    if (+id === currentCity.id) return;
+  // use the useCallback hook to memoize this function through re-render,
+  // to prevent infinite loop when putting this as a useEffect dependency
+  const getCity = useCallback(
+    async function (id) {
+      if (+id === currentCity.id) return;
 
-    dispatch({ type: "loading" });
-    try {
-      const res = await fetch(`${URL}/cities/${id}`);
-      const city = await res.json();
-      dispatch({ type: "city/loaded", payload: city });
-    } catch (err) {
-      dispatch({
-        type: "rejected",
-        payload: "There was an error while loading data...",
-      });
-    }
-  }
+      dispatch({ type: "loading" });
+      try {
+        const res = await fetch(`${URL}/cities/${id}`);
+        const city = await res.json();
+        dispatch({ type: "city/loaded", payload: city });
+      } catch (err) {
+        dispatch({
+          type: "rejected",
+          payload: "There was an error while loading data...",
+        });
+      }
+    },
+    [currentCity.id]
+  );
 
   async function createCity(city) {
     dispatch({ type: "loading" });
