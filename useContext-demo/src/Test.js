@@ -14,13 +14,26 @@ function SlowComponent() {
   );
 }
 
-export default function Test() {
+function Counter({ children }) {
   const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <button onClick={() => setCount((c) => c + 1)}>Increase: {count}</button>
+      {children}
+    </>
+  );
+}
+
+// Putting a slow component inside as child
+// the slow component won't re-render along with the parent component
+export default function Test() {
   return (
     <div>
       <h1>Slow counter?!?</h1>
-      <button onClick={() => setCount((c) => c + 1)}>Increase: {count}</button>
-      <SlowComponent />
+      <Counter>
+        <SlowComponent />
+      </Counter>
     </div>
   );
 }
