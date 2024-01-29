@@ -1,5 +1,7 @@
 import { redirect } from "react-router-dom";
 import { createOrder } from "../services/apiRestaurant";
+import store from "../store";
+import { clearCart } from "../features/cart/cartSlice";
 
 const phoneRegex =
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
@@ -11,7 +13,7 @@ export async function createOrderAction({ request }) {
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
-    priority: data.priority === "on",
+    priority: data.priority === "true",
   };
 
   const errors = {};
@@ -24,6 +26,9 @@ export async function createOrderAction({ request }) {
 
   // the createOrder function in the apiRestaurant will return the newly created order object
   const newOrder = await createOrder(order);
+
+  // not a good practice to access the store in here
+  store.dispatch(clearCart());
 
   return redirect(`/order/${newOrder.id}`);
 }

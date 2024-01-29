@@ -8,6 +8,8 @@ import { createSlice } from "@reduxjs/toolkit";
 //   totalPrice: number;
 // }
 
+// cart: item[]
+
 const initialState = {
   cart: [],
 };
