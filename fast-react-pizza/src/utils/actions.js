@@ -2,6 +2,7 @@ import { redirect } from "react-router-dom";
 import { createOrder } from "../services/apiRestaurant";
 import store from "../store";
 import { clearCart } from "../features/cart/cartSlice";
+import { updateOrder } from "../services/apiRestaurant";
 
 const phoneRegex =
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
@@ -31,4 +32,9 @@ export async function createOrderAction({ request }) {
   store.dispatch(clearCart());
 
   return redirect(`/order/${newOrder.id}`);
+}
+
+export async function updateOrderAction({ params }) {
+  await updateOrder(params.id, { priority: true });
+  return null;
 }
